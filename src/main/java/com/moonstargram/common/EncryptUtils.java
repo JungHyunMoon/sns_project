@@ -1,4 +1,4 @@
-package com.moonstargram.utils;
+package com.moonstargram.common;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

@@ -1,24 +1,131 @@
 @charset "UTF-8";
+
 html, body {
 	height: 100%;
 }
-#wrap {height: 100%; background-color: #F0EBEB;}
-.font-italic-bold {font-style: italic; font-weight: bold; font-size: 30px}
-.image {height: 375px; width: 250px; background-color: white;}
-.login {border: solid gray; width: 350px; height: 300px; background-color: #F5E6E6;}
-.logup-box {border: solid gray; width: 350px; height: 50px; background-color: #F5E6E6;}
-a { text-decoration:none !important }
-.border-radius {border-radius: 20px}
 
-.signUp {border: solid gray; width: 350px; height: 450px; background-color: #F5E6E6;}
+#wrap {
+	height: 100%;
+	background-color: #F0EBEB;
+}
 
-.nav-box {width: 450px; height: 100%; background-color: #D9D9D9;}
-#contents {overflow: scroll; overflow-x:hidden; width: 2000px}
-#timeline {min-height: 600px; width: 500px; background-color: navy;}
-#chat-box {overflow:auto; height: 500px; width: 500px; background-color: lime;}
+.font-italic-bold {
+	font-style: italic;
+	font-weight: bold;
+	font-size: 30px
+}
+
+.image {
+	height: 375px;
+	width: 250px;
+	background-color: white;
+}
+
+.login {
+	border: solid gray;
+	width: 350px;
+	height: 300px;
+	background-color: #F5E6E6;
+}
+
+.logup-box {
+	border: solid gray;
+	width: 350px;
+	height: 50px;
+	background-color: #F5E6E6;
+}
+
+a {
+	text-decoration: none !important
+}
+
+.border-radius {
+	border-radius: 20px
+}
+
+.signUp {
+	border: solid gray;
+	width: 350px;
+	height: 450px;
+	background-color: #F5E6E6;
+}
+
+.nav-box {
+	width: 450px;
+	height: 100%;
+	background-color: #D9D9D9;
+}
+
+#contents {
+	overflow: scroll;
+	overflow-x: hidden;
+	width: 2000px
+}
+
+#timeline {
+	min-height: 600px;
+	width: 500px;
+}
+
+.image-box {
+	width: 100%;
+	height: 300px;
+	background-color: gray;
+}
+
+#chat-box {
+	overflow: auto;
+	height: 500px;
+	width: 500px;
+	background-color: lime;
+}
 
 .user-data {
-    position: fixed;
-    bottom: 10px;
-    width: 300px;
+	position: fixed;
+	bottom: 10px;
+	width: 300px;
+}
+	
+	
+	/* 팝업!!!!!!!!!! */ 
+.background { 
+	position : fixed;
+	width: 100%;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.3);
+	z-index: 1000;
+	/* 숨기기 */
+	z-index: -1;
+	opacity: 0;
+}
+
+.show {
+	opacity: 1;
+	z-index: 1000;
+	transition: all 0.5s;
+}
+
+.window {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+.popup {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: #ffffff;
+	box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
+	/* 임시 지정 */
+	width: 500px;
+	height: 500px;
+	/* 초기에 약간 아래에 배치 */
+	transform: translate(-50%, -40%);
+}
+
+.show .popup {
+	transform: translate(-50%, -50%);
+	transition: all 0.5s;
 }

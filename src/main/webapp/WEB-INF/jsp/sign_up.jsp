@@ -31,7 +31,7 @@
 	<div id="wrap"
 		class="container d-flex justify-content-center align-items-center">
 		<div class="d-flex">
-			<form id="signInForm" method="post" action="/moonstargram/sign_up">
+			<form id="signUpForm" method="post" action="/moonstargram/sign_up">
 				<div class="signUp">
 					<div class="pt-3 text-center">
 						<div class="font-italic-bold">Moonstargram</div>
@@ -74,8 +74,7 @@
 
 <script>
 	$(document).ready(function() {
-		$('#signInForm').on('submit', function(e) {
-			e.preventDefault();
+		$('#signUpForm').on('submit', function(e) {
 			let email = $('#email').val().trim();
 			let nickname = $('#nickname').val().trim();
 			let loginId = $('#loginId').val().trim();
@@ -106,6 +105,7 @@
 			$.post(url, params)		// request
 			.done(function(data) {	// response
 				if (data.code == 1) {	// 성공
+					alert("안녕하세요!")
 					location.href="/moonstargram/sign_in_view";			
 				} else {	// 실패
 					alert("회원 가입에 실패하였습니다.");

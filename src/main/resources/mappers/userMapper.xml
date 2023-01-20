@@ -38,4 +38,8 @@
 			`loginId` = #{loginId}
 			AND `password` = #{password}
 	</select>
+	
+<!-- 	<select id="selectUserNameList" resultType="com.moonstargram.user.model.User"> -->
+	
+<!-- 	</select> -->
 </mapper>

@@ -4,22 +4,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.moonstargram.common.EncryptUtils;
 import com.moonstargram.user.bo.UserBO;
 import com.moonstargram.user.model.User;
-import com.moonstargram.utils.EncryptUtils;
 
 import jakarta.servlet.http.HttpSession;
 
 @RequestMapping("/moonstargram")
 @RestController
-public class MoonstargramRestController {
+public class UserRestController {
 
 	@Autowired
 	private UserBO userBO;
@@ -34,11 +34,13 @@ public class MoonstargramRestController {
 			@RequestParam("email") String email,
 			@RequestParam("nickname") String nickname,
 			@RequestParam("loginId") String loginId,
-			@RequestParam("password") String password
+			@RequestParam("password") String password,
+			Model model
 			) {
 		String hashedPassword = EncryptUtils.md5(password);
 		
 		userBO.addUser(email, nickname, loginId, hashedPassword);
+		model.addAttribute("nickname", nickname);
 		
 		Map<String, Object> result = new HashMap<>();
 		result.put("code", 1);
@@ -63,7 +65,7 @@ public class MoonstargramRestController {
 		Map<String, Object> result = new HashMap<>();
 		if (user != null) {
 			session.setAttribute("nickName", user.getNickname());
-			session.setAttribute("id", user.getId());
+			session.setAttribute("userId", user.getId());
 			result.put("code", 1);
 			result.put("result", "성공");
 		} else {
