@@ -52,8 +52,10 @@
 							<c:choose>
 								<c:when test="${card.alreadyLike == true}">
 									<img src="https://u7.uidownload.com/vector/149/516/vector-heart-svg.jpg" id="${card.post.id}fiiledHeart" width="18" height="18" alt="filled heart" class="">
+									<img src="https://www.iconninja.com/files/214/518/441/heart-icon.png" id="${card.post.id}vacantHeart" width="18" height="18" alt="empty heart" class="d-none">
 								</c:when>
 								<c:when test="${card.alreadyLike == false}">
+									<img src="https://u7.uidownload.com/vector/149/516/vector-heart-svg.jpg" id="${card.post.id}fiiledHeart" width="18" height="18" alt="filled heart" class="d-none">
 									<img src="https://www.iconninja.com/files/214/518/441/heart-icon.png" id="${card.post.id}vacantHeart" width="18" height="18" alt="empty heart" class="">
 								</c:when>
 							</c:choose>
@@ -110,10 +112,11 @@
 <script>
 	$(document).ready(function() {
 		
+		/* 더보기 버튼 */
 		$('.more-btn').on('click', function() {
 			let postId = $(this).data('post-id');
 			
-			// 두번째 클릭부터 clikc이벤트가 두번 값도 다르게 들어옴!
+			/* 삭제하기 */
 			$('.delete-btn').on('click', function() {
 				$.ajax({
 					type:"DELETE"
@@ -189,11 +192,11 @@
 						// 마지막 노드 빈 하트
 						$(this).children().first().addClass('d-none')
 						$(this).children().last().removeClass('d-none')
-						document.location.reload(true);
+// 						document.location.reload(true);
 					} else if (data.result == false ) {
 						$(this).children().first().removeClass('d-none')
 						$(this).children().last().addClass('d-none')
-						document.location.reload(true);
+// 						document.location.reload(true);
 					} else {
 						alert("code 잘못들어왔음")
 					}
