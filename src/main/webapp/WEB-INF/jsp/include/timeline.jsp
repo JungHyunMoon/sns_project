@@ -6,35 +6,48 @@
 		<%-- 타임라인 영역 --%>
 		<div class="timeline-box my-5">
 			<%-- 반목문 --%>
-			<c:forEach var="post" items="${postList}">
+			<c:forEach var="card" items="${cardList}">
 				<div class="card border rounded mt-3">
 					<%-- 글쓴이, 더보기(삭제) --%>
 					<div class="p-2 d-flex justify-content-between">
-						<span class="font-weight-bold">${nickName}</span>
-	
-						<%-- 더보기 --%>
-						<a href="#" class="more-btn" data-toggle="modal" data-target="#modal" data-post-id="${card.post.id}">
-							<img src="https://www.iconninja.com/files/860/824/939/more-icon.png" width="30">
-						</a>
+						<span class="font-weight-bold">${card.user.nickname}</span>
+						<%-- 내 게시물에만 더보기 노출 --%>
+						<c:if test="${userId eq card.post.userId}">
+							<%-- 더보기 --%>
+							<a href="#" class="more-btn" data-toggle="modal" data-target="#modal" data-post-id="${card.post.id}">
+								<img src="https://www.iconninja.com/files/860/824/939/more-icon.png" width="30">
+							</a>
+						</c:if>	
 					</div>
 	
 					<%-- 카드 이미지 --%>
 					<div class="card-img">
-						<img src="${post.imagePath}" class="w-100" alt="본문 이미지">
+						<img src="${card.post.imagePath}" class="w-100" alt="본문 이미지">
 					</div>
 	
 					<%-- 좋아요 --%>
 					<div class="card-like m-3">
-						<a href="#" class="like-btn">
-						<img src="https://www.iconninja.com/files/214/518/441/heart-icon.png" width="18" height="18" alt="empty heart">
-							좋아요 10개
-						</a>
+						<button type="button" class="like-btn btn" style="background-color:transparent" data-post-id="${card.post.id}">
+							${console.log(card.alreadyLike)}
+							<c:choose>
+								<c:when test="${card.alreadyLike == true}">
+									<img src="https://u7.uidownload.com/vector/149/516/vector-heart-svg.jpg" id="${card.post.id}fiiledHeart" width="18" height="18" alt="filled heart" class="">
+								</c:when>
+								<c:when test="${card.alreadyLike == false}">
+									<img src="https://www.iconninja.com/files/214/518/441/heart-icon.png" id="${card.post.id}vacantHeart" width="18" height="18" alt="empty heart" class="">
+								</c:when>
+								<c:otherwise>
+									??
+								</c:otherwise>
+							</c:choose>
+								좋아요 ${card.filledLike}개
+						</button>
 					</div>
 	
 					<%-- 글 --%>
 					<div class="card-post m-3">
-						<span class="font-weight-bold">${nickName}: </span>
-						<span>${post.content}</span>
+						<span class="font-weight-bold">${card.user.nickname}: </span>
+						<span>${card.post.content}</span>
 					</div>
 	
 					<%-- 댓글 --%>
@@ -45,26 +58,27 @@
 					<%-- 댓글 목록 --%>
 					<div class="card-comment-list m-2">
 						
-						<c:forEach var="comment" items="${commentList}">
-							<c:if test="${comment.postId eq post.id}">
+						<c:forEach var="commentView" items="${card.commentList}">
 							<div class="card-comment m-1">
-								<span class="font-weight-bold">${comment.postId}</span>
-								<span>${comment.content}</span>
-		
+								<span class="font-weight-bold">${commentView.user.nickname}</span>
+								<span>${commentView.comment.content}</span>
+
 								<%-- 댓글 삭제 버튼 --%>
-								<a href="#">
-									<img class="commentDelBtn" src="https://www.iconninja.com/files/603/22/506/x-icon.png" width="10px" height="10px" data-comment-id="${comment.id}">
-								</a>
+								<c:if test="${userId eq card.post.userId}">
+									<a href="#"> <img class="commentDelBtn"
+										src="https://www.iconninja.com/files/603/22/506/x-icon.png"
+										width="10px" height="10px" data-comment-id="${commentView.comment.id}">
+									</a>
+								</c:if>
 							</div>
-							</c:if>
 						</c:forEach>
 	
 						<%-- 댓글 쓰기 --%>
 						<c:if test="${not empty userId}">
-						<div class="comment-write d-flex border-top mt-2">
-							<input type="text" class="form-control border-0 mr-2" placeholder="댓글 달기"/> 
-							<button type="button" class="comment-btn btn btn-light" data-post-id="${post.id}">게시</button>
-						</div>
+							<div class="comment-write d-flex border-top mt-2">
+								<input type="text" class="form-control border-0 mr-2" placeholder="댓글 달기"/> 
+								<button type="button" class="comment-btn btn btn-light" data-post-id="${card.post.id}" data-user-id="${card.user.id}">게시</button>
+							</div>
 						</c:if>
 					</div>
 					<%--// 댓글 목록 끝 --%>
@@ -78,29 +92,27 @@
 
 <script>
 	$(document).ready(function() {
+		
+		/* 댓글 추가 */
 		$('.comment-btn').on('click', function() {
-			let userId = ${userId};
 			let postId = $(this).data('post-id');
-			
-			// 지금 클릭된 게시버튼의 input 태그를 가져온다.
 			let comment = $(this).siblings('input').val().trim();
-			
-			console.log("아이디: " + userId + " 번호는: " + postId + " 내용: " + comment);
 			
 			$.ajax({
 				type:"POST"
 				, url:"/comment_create"
-				, data: {"userId":userId, "postId":postId, "content":comment}
+				, data: {"postId":postId, "content":comment}
 			
 				, success : function(data) {
 					window.location.reload(true);
 				}
 				, error : function(e) {
-					alert(e);
+					alert("AJAX실패");
 				}
 			});
 		});
 		
+		/* 댓글 삭제 */
 		$('.commentDelBtn').on('click', function() {
 			let commentId = $(this).data('comment-id');
 			console.log(commentId);
@@ -115,6 +127,42 @@
 				}
 				, error : function(e) {
 					alert(e);
+				}
+			});
+		});
+		
+		/* 좋아요 버튼 */
+		$('.like-btn').on('click', function() {
+			let userId = ${userId}
+			let postId = $(this).data('post-id');
+			let target = $(this).children().first().attr('id');
+			console.log(target);
+			$("img[id=target]").addClass('d-none');
+// 			$('.like-btn').children().attr('id', target).addClass('d-none');
+			
+			$.ajax({
+				type:"POST"
+				, url:"/like"
+				, data: {"userId":userId, "postId":postId}
+				, context: this
+			
+				, success : function(data) {
+					if (data.result == true) {
+						// 첫번째 노드 빈 하트
+						// 마지막 노드 꽉찬 하트
+						$(this).children().first().addClass('d-none')
+						$(this).children().last().removeClass('d-none')
+						window.location.reload(true);
+					} else if (data.result == false ) {
+						$(this).children().first().removeClass('d-none')
+						$(this).children().last().addClass('d-none')
+						window.location.reload(true);
+					} else {
+						alert("code 잘못들어왔음")
+					}
+				}
+				, error : function(e) {
+					alert("실패");
 				}
 			});
 		});

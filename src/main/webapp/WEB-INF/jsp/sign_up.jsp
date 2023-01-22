@@ -31,7 +31,7 @@
 	<div id="wrap"
 		class="container d-flex justify-content-center align-items-center">
 		<div class="d-flex">
-			<form id="signUpForm" method="post" action="/moonstargram/sign_up">
+			<form id="signUpForm" method="post" action="/moonstargram/sign_up" onsubmit="return false;">
 				<div class="signUp">
 					<div class="pt-3 text-center">
 						<div class="font-italic-bold">Moonstargram</div>

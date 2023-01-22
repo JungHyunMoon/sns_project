@@ -44,11 +44,4 @@ public class UserController {
 		
 		return "redirect:/moonstargram/sign_in_view";
 	}
-	
-//	@GetMapping("/timeline_view")
-//	public String timeline(Model model) {
-//		model.addAttribute("viewName", "include/timeline");
-//		return "/layout";
-//	}
-
 }

@@ -39,7 +39,19 @@
 			AND `password` = #{password}
 	</select>
 	
-<!-- 	<select id="selectUserNameList" resultType="com.moonstargram.user.model.User"> -->
-	
-<!-- 	</select> -->
+	<select id="getUserById" parameterType="int" resultType="com.moonstargram.user.model.User">
+		SELECT
+			`id`
+			, `email`
+			, `nickname`
+			, `loginId`
+			, `password`
+			, `createdAt`
+			, `updatedAt`
+		FROM
+			`user`
+		WhERE
+			`id` = #{userId}
+		ORDER BY `id` DESC
+	</select>
 </mapper>

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="pt-3 mb-3 text-center font-italic-bold"><a href="/moonstargram/timeline_view" class="text-dark">Moonstargram</a></div>
 <nav class="ml-3">
 	<ul class="nav flex-column w-100">
@@ -21,6 +22,15 @@
 				width="50px"> 마이 페이지</a></li>
 	</ul>
 </nav>
-<div class="user-data">
-	<b>${userId}-${nickName}</b><a href="/moonstargram/sign_out">로그아웃</a>
-</div>
+<c:choose>
+	<c:when test="${not empty userId}">
+		<div class="user-data">
+			<b>${userId}-${nickName}</b><a href="/moonstargram/sign_out"> 로그아웃</a>
+		</div>
+	</c:when>
+	<c:otherwise>
+		<div class="user-data">
+			<a href="/moonstargram/sign_in_view">로그인</a>
+		</div>
+	</c:otherwise>
+</c:choose>

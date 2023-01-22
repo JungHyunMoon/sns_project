@@ -33,7 +33,23 @@
 		FROM
 			`comment`
 		ORDER BY
-			`createdAt` DESC
+			`createdAt` ASC
+	</select>
+	
+	<select id="selectCommentListByPostId" parameterType="int" resultType="com.moonstargram.comment.model.Comment">
+		SELECT
+			`id`
+			, `userId`
+			, `postId`
+			, `content`
+			, `createdAt`
+			, `updatedAt`
+		FROM
+			`comment`
+		WHERE
+			`postId` = #{postId}
+		ORDER BY
+			`createdAt` ASC
 	</select>
 	
 	<delete id="deleteComment" parameterType="int">
