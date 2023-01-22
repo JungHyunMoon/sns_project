@@ -42,18 +42,18 @@
 				return;
 			}
 
-			// 유효성 통과한 이미지는 상자에 업로드 된 파일 이름 노출
+			// 유효성 통과한 이미지는 상자에 업로드 된 파일 노출
 			let formData = new FormData();
 			formData.append("file", $('#file')[0].files[0]);
-			console.log(formData)
 			
 			$('#post-image').attr('width', "100%%");
 			$('#post-image').attr('height', "300px");
 			
+			console.log($('#file').val());
 			
 			$.ajax({
 				type : "POST"
-				, url : "/moonstargram/uploadImage"
+				, url : "/uploadImage"
 		        , processData: false
 		        , contentType: false
 				, data : formData
@@ -76,8 +76,42 @@
 			let content = $('#writeTextArea').val();
 			let image = $('#file').val();
 			
-			alert(content);
-			alert(image);
+			if (content.length < 1) {
+				alert("글 내용을 입력해주세요");
+				return;
+			}
+			
+			let file = $('#file').val();
+			if (file == '') {
+				alert('파일을 업로드 해주세요');
+				return;
+			}
+			
+			let formData = new FormData();
+			formData.append("content", content);
+			formData.append("file", $('#file')[0].files[0]); // $('#file')[0]은 첫번째 input file 태그를 의미, files[0]는 업로드된 첫번째 파일
+
+			
+			$.ajax({
+				type: "post"
+				, url: "/post_create"
+				, data: formData
+				, enctype: "multipart/form-data"    // 파일 업로드를 위한 필수 설정
+				, processData: false   
+				, contentType: false    
+				, success: function(data) {
+					if (data.code == 1) {
+						location.href = "/moonstargram/timeline_view"
+					} else if (data.code == 500) { // 비로그인 일 때
+						location.href = "/moonstargram/sign_in_view";
+					} else {
+						alert(data.errorMessage);
+					}
+				}
+				, error: function(e) {
+					alert("글 저장에 실패했습니다. 관리자에게 문의해주세요." + e);
+				}
+			});  // --- ajax 끝
 			
 		});
 	});

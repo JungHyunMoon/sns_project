@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,7 +14,6 @@ import com.moonstargram.post.bo.PostBO;
 
 import jakarta.servlet.http.HttpSession;
 
-@RequestMapping("/moonstargram")
 @RestController
 public class PostRestController {
 
@@ -36,7 +35,7 @@ public class PostRestController {
         return result;
     }
 	
-	@PostMapping("/create")
+	@PostMapping("/post_create")
 	public Map<String, Object> create(
 			@RequestParam("content") String content,
 			@RequestParam("file") MultipartFile file,
@@ -60,4 +59,17 @@ public class PostRestController {
 		return result;
 	}
 	
+	@DeleteMapping("/delete_post")
+	public Map<String, Object> deletePost(
+			@RequestParam("postId") int postId
+			) {
+		
+		postBO.removePostByPostId(postId);
+		
+		Map<String, Object> result = new HashMap<>();
+		result.put("code", 1);
+		result.put("result", "성공");
+		
+		return result;
+	}
 }

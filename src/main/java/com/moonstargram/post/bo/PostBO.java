@@ -36,6 +36,10 @@ public class PostBO {
 
 		return postDAO.insertPost(userId, content, imagePath);
 	}
+	
+	public void removePostByPostId(int postId) {
+		postDAO.deletePostByPostId(postId);
+	}
 
 	public List<Post> getPostList() {
 		return postDAO.selectPostList();

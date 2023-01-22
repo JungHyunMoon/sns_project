@@ -34,4 +34,11 @@
 			`post`
 		ORDER BY `id` DESC
 	</select>
+	
+	<delete id="deletePostByPostId" parameterType="int">
+		DELETE FROM
+			`post`
+		WHERE
+			`id` = #{postId}
+	</delete>
 </mapper>

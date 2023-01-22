@@ -8,13 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/moonstargram")
 @Controller
 public class PostController {
-	
-	
-//	@GetMapping("/post_list_view")
-//	public String timeline(Model model) {
-//		model.addAttribute("viewName", "include/timeline");
-//		return "/layout";
-//	}
 
 	@GetMapping("/post_create")
 	public String postCreate(Model model) {

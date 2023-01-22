@@ -14,9 +14,30 @@
 						<%-- 내 게시물에만 더보기 노출 --%>
 						<c:if test="${userId eq card.post.userId}">
 							<%-- 더보기 --%>
-							<a href="#" class="more-btn" data-toggle="modal" data-target="#modal" data-post-id="${card.post.id}">
+							<button class="btn more-btn" data-toggle="modal" data-target="#modal" style="background-color:transparent" data-post-id="${card.post.id}">
 								<img src="https://www.iconninja.com/files/860/824/939/more-icon.png" width="30">
-							</a>
+							</button>
+							
+							<!-- Modal -->
+							<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+							  <div class="modal-dialog modal-dialog-centered" role="document">
+							    <div class="modal-content">
+							      <div class="modal-header">
+							        <h5 class="modal-title" id="exampleModalLongTitle">게시물 더보기</h5>
+							        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							          <span aria-hidden="true">&times;</span>
+							        </button>
+							      </div>
+							      <div class="modal-body text-center" data-post-id="${card.post.id}">
+								    <button type="button" class="delete-btn btn btn-danger" data-post-id="${card.post.id}">삭제하기</button>
+								    <button type="button" class="modify-btn btn btn-primary" data-post-id="${card.post.id}">수정하기</button>
+								  	<button type="button" class="btn btn-secondary" data-dismiss="modal">팝업닫기</button>
+							      </div>
+							      <div class="modal-footer">
+							      </div>
+							    </div>
+							  </div>
+							</div>
 						</c:if>	
 					</div>
 	
@@ -28,7 +49,6 @@
 					<%-- 좋아요 --%>
 					<div class="card-like m-3">
 						<button type="button" class="like-btn btn" style="background-color:transparent" data-post-id="${card.post.id}">
-							${console.log(card.alreadyLike)}
 							<c:choose>
 								<c:when test="${card.alreadyLike == true}">
 									<img src="https://u7.uidownload.com/vector/149/516/vector-heart-svg.jpg" id="${card.post.id}fiiledHeart" width="18" height="18" alt="filled heart" class="">
@@ -36,9 +56,6 @@
 								<c:when test="${card.alreadyLike == false}">
 									<img src="https://www.iconninja.com/files/214/518/441/heart-icon.png" id="${card.post.id}vacantHeart" width="18" height="18" alt="empty heart" class="">
 								</c:when>
-								<c:otherwise>
-									??
-								</c:otherwise>
 							</c:choose>
 								좋아요 ${card.filledLike}개
 						</button>
@@ -93,6 +110,27 @@
 <script>
 	$(document).ready(function() {
 		
+		$('.more-btn').on('click', function() {
+			let postId = $(this).data('post-id');
+			
+			// 두번째 클릭부터 clikc이벤트가 두번 값도 다르게 들어옴!
+			$('.delete-btn').on('click', function() {
+				$.ajax({
+					type:"DELETE"
+					, url:"/delete_post"
+					, data: {"postId":postId}
+					
+					, success : function(data) {
+						alert("삭제 되었습니다")
+						window.location.reload(true);
+					}
+					, error : function(e) {
+						alert(e);
+					}
+				});
+			});
+		});
+		
 		/* 댓글 추가 */
 		$('.comment-btn').on('click', function() {
 			let postId = $(this).data('post-id');
@@ -135,9 +173,8 @@
 		$('.like-btn').on('click', function() {
 			let userId = ${userId}
 			let postId = $(this).data('post-id');
-			let target = $(this).children().first().attr('id');
+			let target = $(this).children().last().attr('id');
 			console.log(target);
-			$("img[id=target]").addClass('d-none');
 // 			$('.like-btn').children().attr('id', target).addClass('d-none');
 			
 			$.ajax({
@@ -148,15 +185,15 @@
 			
 				, success : function(data) {
 					if (data.result == true) {
-						// 첫번째 노드 빈 하트
-						// 마지막 노드 꽉찬 하트
+						// 첫번째 노드 꽉찬 하트
+						// 마지막 노드 빈 하트
 						$(this).children().first().addClass('d-none')
 						$(this).children().last().removeClass('d-none')
-						window.location.reload(true);
+						document.location.reload(true);
 					} else if (data.result == false ) {
 						$(this).children().first().removeClass('d-none')
 						$(this).children().last().addClass('d-none')
-						window.location.reload(true);
+						document.location.reload(true);
 					} else {
 						alert("code 잘못들어왔음")
 					}

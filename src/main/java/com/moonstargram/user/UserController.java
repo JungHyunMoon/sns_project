@@ -39,8 +39,8 @@ public class UserController {
 	 */
 	@GetMapping("/sign_out")
 	public String signOut(HttpSession session) {
-		session.removeAttribute("loginId");
-		session.removeAttribute("id");
+		session.removeAttribute("nickName");
+		session.removeAttribute("userId");
 		
 		return "redirect:/moonstargram/sign_in_view";
 	}
