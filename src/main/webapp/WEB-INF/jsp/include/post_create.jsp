@@ -6,20 +6,19 @@
 		<a href="#" id="fileUploadBtn"><img id="post-image" width="80" height="80"
 			src="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-image-512.png"></a>
 	</div>
-	<div class="file-upload d-flex">
+	<div class="file-upload">
 		<%-- file 태그는 숨겨두고 이미지를 클릭하면 file 태그를 클릭한 것처럼 이벤트를 줄 것이다. --%>
 		<form id="ajaxform" enctype = "multipart/form-data">
-			<input type="file" id="file" class="d-none"
+			<input type="file" id="file" class=""
 				accept=".gif, .jpg, .png, .jpeg">
+		<textarea id="writeTextArea" placeholder="내용을 입력해주세요"
+			class="mt-3 w-100 border-0" rows="5"></textarea>
+	
+		<%-- 이미지 업로드를 위한 아이콘과 업로드 버튼을 한 행에 멀리 떨어뜨리기 위한 div --%>
+		<div class="d-flex justify-content-end">
+			<button id="writeBtn" class="btn btn-info">게시</button>
+		</div>
 		</form>
-	</div>
-	<textarea id="writeTextArea" placeholder="내용을 입력해주세요"
-		class="mt-3 w-100 border-0" rows="5"></textarea>
-
-
-	<%-- 이미지 업로드를 위한 아이콘과 업로드 버튼을 한 행에 멀리 떨어뜨리기 위한 div --%>
-	<div class="d-flex justify-content-end">
-		<button id="writeBtn" class="btn btn-info">게시</button>
 	</div>
 </div>
 
@@ -59,8 +58,8 @@
 				, data : formData
 				
 				, success : function(data) {
-					alert(data.result);
-					
+					alert($('#file').val());
+					$('#post-image').attr('src', data.imagePath);
 					$('#post-image').attr('src', data.imagePath);
 
 				}
@@ -89,16 +88,18 @@
 			
 			let formData = new FormData();
 			formData.append("content", content);
-			formData.append("file", $('#file')[0].files[0]); // $('#file')[0]은 첫번째 input file 태그를 의미, files[0]는 업로드된 첫번째 파일
-
+			formData.append("imagePath", $('#file')[0].files[0]); // $('#file')[0]은 첫번째 input file 태그를 의미, files[0]는 업로드된 첫번째 파일
 			
+			alert(formData.get('imagePath'));
+
 			$.ajax({
 				type: "post"
 				, url: "/post_create"
 				, data: formData
 				, enctype: "multipart/form-data"    // 파일 업로드를 위한 필수 설정
 				, processData: false   
-				, contentType: false    
+				, contentType: false  
+				
 				, success: function(data) {
 					if (data.code == 1) {
 						location.href = "/moonstargram/timeline_view"

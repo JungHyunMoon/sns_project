@@ -25,7 +25,7 @@ public class PostRestController {
     		@RequestParam("file") MultipartFile file,
     		HttpSession session
     		) {
-		String nickname = (String)session.getAttribute("nickname");
+		String nickname = (String)session.getAttribute("nickName");
 		String imagePath = postBO.getAddedImage(nickname, file);
 		
 		Map<String, Object> result = new HashMap<>();
@@ -38,11 +38,10 @@ public class PostRestController {
 	@PostMapping("/post_create")
 	public Map<String, Object> create(
 			@RequestParam("content") String content,
-			@RequestParam("file") MultipartFile file,
+			@RequestParam("imagePath") MultipartFile imagePath,
 			HttpSession session) {
 		
 		Integer userId = (Integer)session.getAttribute("userId");
-		String userLoginId = (String)session.getAttribute("userLoginId");
 		
 		Map<String, Object> result = new HashMap<>();
 		if (userId == null) {
@@ -52,7 +51,7 @@ public class PostRestController {
 			return result;
 		}
 		
-		postBO.addPost(userId, userLoginId, content, file);
+		postBO.addPost(userId, content, imagePath);
 		
 		result.put("code", 1);
 		result.put("result", "성공");
@@ -64,7 +63,7 @@ public class PostRestController {
 			@RequestParam("postId") int postId
 			) {
 		
-		postBO.removePostByPostId(postId);
+		int deleteRow = postBO.deletePostByPostId(postId);
 		
 		Map<String, Object> result = new HashMap<>();
 		result.put("code", 1);

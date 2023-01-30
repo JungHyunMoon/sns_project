@@ -23,7 +23,9 @@
 			`like`
 		WHERE
 			`postId` = #{postId} 
+			<!-- <if  -->
 			AND `userId` = #{userId}
+			<!-- <if  -->
 	</select>
 	
 	<delete id="deleteLikeByUserIdPostId" parameterType="map">

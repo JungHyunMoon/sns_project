@@ -41,4 +41,17 @@
 		WHERE
 			`id` = #{postId}
 	</delete>
+	
+	<update id="updatePostByPostIdUserId" parameterType="map">
+		UPDATE `post`
+		SET
+			`content` = #{content}
+			<!-- imagePatj가 -->
+			<if test="">
+			
+			</if>
+		WHERE
+			`id` = #{id} 
+			AND `````
+	</update>
 </mapper>

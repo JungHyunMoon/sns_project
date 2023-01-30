@@ -31,6 +31,7 @@
 							      <div class="modal-body text-center" data-post-id="${card.post.id}">
 								    <button type="button" class="delete-btn btn btn-danger" data-post-id="${card.post.id}">삭제하기</button>
 								    <button type="button" class="modify-btn btn btn-primary" data-post-id="${card.post.id}">수정하기</button>
+								    <!-- data-dismiss 클래스로 모달 닫기 -->
 								  	<button type="button" class="btn btn-secondary" data-dismiss="modal">팝업닫기</button>
 							      </div>
 							      <div class="modal-footer">
@@ -50,16 +51,16 @@
 					<div class="card-like m-3">
 						<button type="button" class="like-btn btn" style="background-color:transparent" data-post-id="${card.post.id}">
 							<c:choose>
-								<c:when test="${card.alreadyLike == true}">
+								<c:when test="${card.alreadyLike eq true}">
 									<img src="https://u7.uidownload.com/vector/149/516/vector-heart-svg.jpg" id="${card.post.id}fiiledHeart" width="18" height="18" alt="filled heart" class="">
 									<img src="https://www.iconninja.com/files/214/518/441/heart-icon.png" id="${card.post.id}vacantHeart" width="18" height="18" alt="empty heart" class="d-none">
 								</c:when>
-								<c:when test="${card.alreadyLike == false}">
+								<c:when test="${card.alreadyLike eq false}">
 									<img src="https://u7.uidownload.com/vector/149/516/vector-heart-svg.jpg" id="${card.post.id}fiiledHeart" width="18" height="18" alt="filled heart" class="d-none">
 									<img src="https://www.iconninja.com/files/214/518/441/heart-icon.png" id="${card.post.id}vacantHeart" width="18" height="18" alt="empty heart" class="">
 								</c:when>
 							</c:choose>
-								좋아요 ${card.filledLike}개
+							좋아요 ${card.filledLike}개
 						</button>
 					</div>
 	
@@ -192,11 +193,11 @@
 						// 마지막 노드 빈 하트
 						$(this).children().first().addClass('d-none')
 						$(this).children().last().removeClass('d-none')
-// 						document.location.reload(true);
+						document.location.reload(true);
 					} else if (data.result == false ) {
 						$(this).children().first().removeClass('d-none')
 						$(this).children().last().addClass('d-none')
-// 						document.location.reload(true);
+						document.location.reload(true);
 					} else {
 						alert("code 잘못들어왔음")
 					}
